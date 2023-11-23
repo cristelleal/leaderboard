@@ -1,0 +1,33 @@
+:root {
+  /*------------------------------------------------------------
+  |
+  | - COLOR
+  |
+  ------------------------------------------------------------*/
+
+  /* COLOR PALETTE */
+
+  --color-n-000: white;
+  --color-n-050: #E4C9C5;
+  --color-n-055: #e4c9c5ca;
+  --color-n-0100: #def4b3;
+  --color-n-0150: grey;
+  --color-n-0200: #343434;
+  --color-n-0250: red;
+
+  /*------------------------------------------------------------
+  |
+  | - TYPOGRAPHY
+  |
+  ------------------------------------------------------------*/
+
+  --typography-typeface: "Montserrat", sans-serif;
+
+  /* FONT SIZE */
+
+  --typography-h1: 1.5rem;
+
+  /* PADDING */
+
+  --padding-regular-button: 10px;
+}

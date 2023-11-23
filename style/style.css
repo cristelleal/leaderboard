@@ -1,0 +1,66 @@
+@import url("variables.css");
+
+/*--------------------------------------------------------------
+   - FOUNDATION
+--------------------------------------------------------------*/
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+::selection {
+  background-color: var(--color-n-050);
+  color: var(--color-n-0200);
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  color: var(--color-n-0200);
+  font-family: var(--typography-typeface);
+  text-align: center;
+}
+
+/*--------------------------------------------------------------
+   - COMPONENTS
+--------------------------------------------------------------*/
+
+h1 {
+  font-size: var(--typography-h1);
+  margin: 2%;
+}
+
+input {
+  padding: var(--padding-regular-button);
+  border-radius: 0;
+  border: 1px solid var(--color-n-050);
+}
+
+input:focus {
+  border-radius: 0;
+  border: 1px solid var(--color-n-250);
+}
+
+button {
+  cursor: pointer;
+  padding: 10px 30px;
+  color: var(--color-n-000);
+  background-color: var(--color-n-050);
+  border: 1px solid var(--color-n-050);
+}
+
+button:hover {
+  background-color: var(--color-n-055);
+  border: 1px solid var(--color-n-055);
+}
+
+.error {
+  color: var(--color-n-0250);
+  font-weight: bold;
+}
