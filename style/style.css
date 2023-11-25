@@ -44,7 +44,7 @@ input {
 
 input:focus {
   border-radius: 0;
-  border: 1px solid var(--color-n-250);
+  border: 2px solid var(--color-n-250);
 }
 
 button {
@@ -63,4 +63,43 @@ button:hover {
 .error {
   color: var(--color-n-0250);
   font-weight: bold;
+}
+
+.box {
+  background-color: var(--color-n-050);
+  color: var(--color-n-0200);
+  font-weight: bold;
+  padding: 1.5%;
+  margin: .8% 18% .8% 18%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+
+.date {
+  margin: 2%;
+  color: var(--color-n-0150);
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.score-buttons {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.addfive, .removefive, .remove-logo {
+  height: 40px;
+  width: 42px;
+  text-align: center;
+  background-color: var(--color-n-000);
+  border-radius: 50%;
+  padding: 10px; 
+  margin: 5px;
+}
+
+.addfive:hover, .removefive:hover, .remove-logo:hover {
+  background-color: var(--color-n-0100);
 }
