@@ -1,8 +1,9 @@
+import Player from '../class/Player';
 import { createDate } from '../script/utils';
 import informationsLine from './informations';
 import sortBoxes from './sortBox';
 
-const existingNames = [];
+const existingPlayers = [];
 
 export default function wrapperPlayer() {
   const wrap = document.querySelector('.wrapper');
@@ -12,21 +13,28 @@ export default function wrapperPlayer() {
   const lastNameInput = document.querySelector('#lastname');
   const countryInput = document.querySelector('#country');
   const scoreInput = document.querySelector('#score');
-  const entireName = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
 
-  if (existingNames.includes(entireName)) {
-    const errorMessage = 'This player already exists';
-    informationsLine(errorMessage);
-    throw new Error();
-  }
+  const entireName = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
 
   if (
     !emptyField.includes(firstNameInput.value.trim())
     && !emptyField.includes(lastNameInput.value.trim())
     && !emptyField.includes(countryInput.value.trim())
     && !emptyField.includes(scoreInput.value.trim())
-    && !existingNames.includes(entireName)
   ) {
+    const player = new Player(
+      firstNameInput.value.trim(),
+      lastNameInput.value.trim(),
+      countryInput.value.trim(),
+      scoreInput.value.trim(),
+    );
+
+    if (existingPlayers.includes(player.getFullName())) {
+      const errorMessage = 'This player already exists';
+      informationsLine(errorMessage);
+      throw new Error();
+    }
+
     const boxDiv = document.createElement('div');
     boxDiv.classList.add('box');
     const nameAndDate = document.createElement('div');
@@ -57,13 +65,17 @@ export default function wrapperPlayer() {
     addFive.textContent = '+5';
     removeFive.textContent = '-5';
 
-    existingNames.push(entireName);
+    existingPlayers.push(player);
 
     deletePlayer.addEventListener('click', () => {
       boxDiv.remove();
-      const index = existingNames.indexOf(entireName);
-      if (index !== -1) {
-        existingNames.splice(index, 1);
+      // const index = existingPlayers.indexOf(entireName);
+      const oldPayerIndex = existingPlayers.findIndex(
+        (existingPlayer) => existingPlayer.getFullName() === player.getFullName(),
+      );
+
+      if (oldPayerIndex !== -1) {
+        existingPlayers.splice(oldPayerIndex, 1);
       }
     });
 
@@ -76,6 +88,7 @@ export default function wrapperPlayer() {
       } else {
         score.textContent = newScore;
       }
+
       sortBoxes();
     });
 
@@ -103,5 +116,6 @@ export default function wrapperPlayer() {
     scoreButtons.appendChild(removeFive);
     boxDiv.appendChild(scoreButtons);
   }
+
   sortBoxes();
 }

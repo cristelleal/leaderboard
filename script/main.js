@@ -1,3 +1,3 @@
-import addPlayer from '../components/button';
+import addPlayer from '../components/addPlayer';
 
 addPlayer();
