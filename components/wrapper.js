@@ -1,5 +1,5 @@
 import Player from '../class/Player';
-import { createDate } from '../script/utils';
+import { createDate, capitalizeFirstLetter } from '../script/utils';
 import informationsLine from './informations';
 import sortBoxes from './sortBox';
 
@@ -14,8 +14,6 @@ export default function wrapperPlayer() {
   const countryInput = document.querySelector('#country');
   const scoreInput = document.querySelector('#score');
 
-  const entireName = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
-
   if (
     !emptyField.includes(firstNameInput.value.trim())
     && !emptyField.includes(lastNameInput.value.trim())
@@ -23,13 +21,17 @@ export default function wrapperPlayer() {
     && !emptyField.includes(scoreInput.value.trim())
   ) {
     const player = new Player(
-      firstNameInput.value.trim(),
-      lastNameInput.value.trim(),
-      countryInput.value.trim(),
+      capitalizeFirstLetter(firstNameInput.value.trim()),
+      capitalizeFirstLetter(lastNameInput.value.trim()),
+      capitalizeFirstLetter(countryInput.value.trim()),
       scoreInput.value.trim(),
     );
 
-    if (existingPlayers.includes(player.getFullName())) {
+    const isPlayerExists = existingPlayers.some(
+      (existingPlayer) => existingPlayer.getFullName() === player.getFullName(),
+    );
+
+    if (isPlayerExists) {
       const errorMessage = 'This player already exists';
       informationsLine(errorMessage);
       throw new Error();
@@ -58,10 +60,10 @@ export default function wrapperPlayer() {
     const removeFive = document.createElement('div');
     removeFive.classList.add('removefive');
 
-    name.textContent = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
+    name.textContent = `${player.firstName} ${player.lastName}`;
     date.textContent = createDate().toUpperCase();
-    country.textContent = countryInput.value;
-    score.textContent = scoreInput.value;
+    country.textContent = player.country;
+    score.textContent = player.score;
     addFive.textContent = '+5';
     removeFive.textContent = '-5';
 
@@ -69,38 +71,23 @@ export default function wrapperPlayer() {
 
     deletePlayer.addEventListener('click', () => {
       boxDiv.remove();
-      // const index = existingPlayers.indexOf(entireName);
-      const oldPayerIndex = existingPlayers.findIndex(
-        (existingPlayer) => existingPlayer.getFullName() === player.getFullName(),
-      );
 
-      if (oldPayerIndex !== -1) {
-        existingPlayers.splice(oldPayerIndex, 1);
+      const playerIndex = existingPlayers.indexOf(player);
+
+      if (playerIndex !== -1) {
+        existingPlayers.splice(playerIndex, 1);
       }
     });
 
     addFive.addEventListener('click', () => {
-      const scoreValue = parseInt(score.textContent, 10);
-      const newScore = scoreValue + 5;
-
-      if (newScore >= 100) {
-        score.textContent = Math.min(newScore, 100);
-      } else {
-        score.textContent = newScore;
-      }
-
+      player.increaseScore();
+      score.textContent = player.score;
       sortBoxes();
     });
 
     removeFive.addEventListener('click', () => {
-      const scoreValue = parseInt(score.textContent, 10);
-      const newScore = scoreValue - 5;
-
-      if (newScore <= 0) {
-        score.textContent = Math.max(newScore, 0);
-      } else {
-        score.textContent = newScore;
-      }
+      player.decreaseScore();
+      score.textContent = player.score;
       sortBoxes();
     });
 

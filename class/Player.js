@@ -24,10 +24,10 @@ export default class Player {
   }
 
   increaseScore() {
-    this.score += 5;
+    this.score = Math.min(this.score += 5, 100);
   }
 
   decreaseScore() {
-    this.score -= 5;
+    this.score = Math.max(this.score -= 5, 0);
   }
 }
