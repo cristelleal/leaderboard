@@ -1,8 +1,9 @@
-import { createDate } from '../script/utils';
+import Player from '../class/Player';
+import { createDate, capitalizeFirstLetter } from '../script/utils';
 import informationsLine from './informations';
 import sortBoxes from './sortBox';
 
-const existingNames = [];
+const existingPlayers = [];
 
 export default function wrapperPlayer() {
   const wrap = document.querySelector('.wrapper');
@@ -12,21 +13,30 @@ export default function wrapperPlayer() {
   const lastNameInput = document.querySelector('#lastname');
   const countryInput = document.querySelector('#country');
   const scoreInput = document.querySelector('#score');
-  const entireName = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
-
-  if (existingNames.includes(entireName)) {
-    const errorMessage = 'This player already exists';
-    informationsLine(errorMessage);
-    throw new Error();
-  }
 
   if (
     !emptyField.includes(firstNameInput.value.trim())
     && !emptyField.includes(lastNameInput.value.trim())
     && !emptyField.includes(countryInput.value.trim())
     && !emptyField.includes(scoreInput.value.trim())
-    && !existingNames.includes(entireName)
   ) {
+    const player = new Player(
+      capitalizeFirstLetter(firstNameInput.value.trim()),
+      capitalizeFirstLetter(lastNameInput.value.trim()),
+      capitalizeFirstLetter(countryInput.value.trim()),
+      scoreInput.value.trim(),
+    );
+
+    const isPlayerExists = existingPlayers.some(
+      (existingPlayer) => existingPlayer.getFullName() === player.getFullName(),
+    );
+
+    if (isPlayerExists) {
+      const errorMessage = 'This player already exists';
+      informationsLine(errorMessage);
+      throw new Error();
+    }
+
     const boxDiv = document.createElement('div');
     boxDiv.classList.add('box');
     const nameAndDate = document.createElement('div');
@@ -50,44 +60,34 @@ export default function wrapperPlayer() {
     const removeFive = document.createElement('div');
     removeFive.classList.add('removefive');
 
-    name.textContent = `${firstNameInput.value.trim()} ${lastNameInput.value.trim()}`;
+    name.textContent = `${player.firstName} ${player.lastName}`;
     date.textContent = createDate().toUpperCase();
-    country.textContent = countryInput.value;
-    score.textContent = scoreInput.value;
+    country.textContent = player.country;
+    score.textContent = player.score;
     addFive.textContent = '+5';
     removeFive.textContent = '-5';
 
-    existingNames.push(entireName);
+    existingPlayers.push(player);
 
     deletePlayer.addEventListener('click', () => {
       boxDiv.remove();
-      const index = existingNames.indexOf(entireName);
-      if (index !== -1) {
-        existingNames.splice(index, 1);
+
+      const playerIndex = existingPlayers.indexOf(player);
+
+      if (playerIndex !== -1) {
+        existingPlayers.splice(playerIndex, 1);
       }
     });
 
     addFive.addEventListener('click', () => {
-      const scoreValue = parseInt(score.textContent, 10);
-      const newScore = scoreValue + 5;
-
-      if (newScore >= 100) {
-        score.textContent = Math.min(newScore, 100);
-      } else {
-        score.textContent = newScore;
-      }
+      player.increaseScore();
+      score.textContent = player.score;
       sortBoxes();
     });
 
     removeFive.addEventListener('click', () => {
-      const scoreValue = parseInt(score.textContent, 10);
-      const newScore = scoreValue - 5;
-
-      if (newScore <= 0) {
-        score.textContent = Math.max(newScore, 0);
-      } else {
-        score.textContent = newScore;
-      }
+      player.decreaseScore();
+      score.textContent = player.score;
       sortBoxes();
     });
 
@@ -103,5 +103,6 @@ export default function wrapperPlayer() {
     scoreButtons.appendChild(removeFive);
     boxDiv.appendChild(scoreButtons);
   }
+
   sortBoxes();
 }

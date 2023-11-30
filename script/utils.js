@@ -2,6 +2,10 @@ export default function containsNumber(string) {
   return /\d/.test(string);
 }
 
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 export function createDate() {
   const now = new Date();
   const months = [

@@ -4,7 +4,8 @@ import wrapperPlayer from './wrapper';
 export default function addPlayer() {
   const button = document.querySelector('button');
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
     inputErrors();
     wrapperPlayer();
   });
